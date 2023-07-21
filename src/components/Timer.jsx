@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import Progress from "./Progress";
 import Accuracy from "./Accuracy";
+import { useState } from "react";
 
 const Timer = ({
   startCounting,
@@ -8,7 +9,7 @@ const Timer = ({
   timeElapsed,
   setTimeElapsed,
   progress,
-  accuracy
+  accuracy,
   setTimeLimit,
   WPM,
   setWPM,
@@ -64,10 +65,10 @@ const Timer = ({
                 id="choose"
                 defaultValue={15}
               >
-                <option value="15">15 seconds</option>
-                <option value="30">30 seconds</option>
-                <option value="45">45 seconds</option>
-                <option value="60">60 seconds</option>
+                <option value="15">15 sec</option>
+                <option value="30">30 sec</option>
+                <option value="45">45 sec</option>
+                <option value="60">60 sec</option>
               </select>
             </span>
           </div>
