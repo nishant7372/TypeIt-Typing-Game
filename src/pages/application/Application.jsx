@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 // spinner
-import { SpinnerCircularFixed } from "spinners-react";
+import {
+  SpinnerCircular,
+  SpinnerCircularFixed,
+  SpinnerDotted,
+} from "spinners-react";
 
 // components
 import Word from "../../components/Word";
@@ -130,8 +134,13 @@ export default function Application() {
         {loading ? ( // when it start loading
           <div className="flex justify-center">
             <div className="spinner">
-              <SpinnerCircularFixed
-                style={{ width: "10rem", height: "10rem", color: "blue" }}
+              <SpinnerDotted
+                style={{
+                  width: "8rem",
+                  height: "8rem",
+                  color: "magenta",
+                  marginTop: "15rem",
+                }}
               />
             </div>
           </div>
