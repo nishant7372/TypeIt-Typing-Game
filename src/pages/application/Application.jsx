@@ -183,7 +183,7 @@ export default function Application() {
 
             <div className="bottom">
               <SimpleButton
-                content="Restart Game"
+                content="Restart"
                 type={"restartButton"}
                 action={restartGame}
                 buttonStyle={{

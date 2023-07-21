@@ -31,7 +31,7 @@ function Header({ restartGame }) {
         </div>
         <div>
           <SimpleButton
-            content="Restart Game"
+            content="Restart"
             type={"restartButton"}
             action={restartGame}
           />
