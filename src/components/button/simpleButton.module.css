@@ -5,6 +5,8 @@
   --success-bt-hover: rgba(3, 125, 3, 0.8);
   --danger-bt-hover: rgba(255, 0, 0, 0.95);
   --warning-bt-hover: rgba(1, 53, 112, 0.8);
+  --restart-bt: rgb(124, 58, 237);
+  --restart-bt-hover: rgb(114, 41, 240);
 }
 
 .simpleButton {
@@ -17,7 +19,8 @@
 .updateButton,
 .deleteButton,
 .logOutButton,
-.cancelButton {
+.cancelButton,
+.restartButton {
   padding: 0.2rem 0.8rem;
   border-radius: 4px;
   transition: all 0.2s ease;
@@ -46,6 +49,10 @@
   background-color: var(--warning-bt);
 }
 
+.restartButton {
+  background-color: var(--restart-bt);
+}
+
 .saveButton:hover,
 .updateButton:hover,
 .deleteButton:hover,
@@ -71,4 +78,8 @@
 
 .removeButton:hover {
   background-color: var(--warning-bt-hover);
+}
+
+.restartButton:hover {
+  background-color: var(--restart-bt-hover);
 }

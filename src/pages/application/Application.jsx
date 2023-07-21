@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 // spinner
-import { SpinnerDotted } from "spinners-react";
+import { SpinnerCircularFixed } from "spinners-react";
 
 // components
 import Word from "../../components/Word";
@@ -9,10 +9,9 @@ import Timer from "../../components/Timer";
 import Header from "../../components/Header";
 import ResultsModal from "../../components/ResultsModal";
 import { v4 as uuid } from "uuid";
+import SimpleButton from "../../components/button/simpleButton";
 
 export default function Application() {
-  // words states
-
   const [userInput, setUserInput] = useState(""); // state for user input
 
   const [words, setWords] = useState([]); // state for collecting words
@@ -29,6 +28,8 @@ export default function Application() {
   // loading
   const [loading, setLoading] = useState(false);
 
+  // Restart
+
   // result
   const [result, setResult] = useState(
     JSON.parse(localStorage.getItem("storage") || "[]")
@@ -41,16 +42,13 @@ export default function Application() {
     //data fetching
 
     setLoading(true); //data is loading
-
-    const { data } = await axios.get(
-      "https://random-word-api.herokuapp.com/all"
-    );
-
-    const newList = shuffle(data); // making a new list of shuffle words
-
-    setWords(newList.slice(0, 20)); // selecting 20 word from it
-
-    setLoading(false); //data loaded
+    let x = Math.floor(Math.random() * 10 + 1);
+    if (x < 3) x = 3;
+    const tempUrl = "http://metaphorpsum.com/paragraphs/1/" + x.toString();
+    const { data } = await axios.get(tempUrl);
+    const fetchParagraph = data.split(" ");
+    setWords(fetchParagraph);
+    setLoading(false);
   };
 
   const minutes = timeElapsed / 60; // Time cal
@@ -59,15 +57,6 @@ export default function Application() {
   useEffect(() => {
     localStorage.setItem("storage", JSON.stringify(result));
   }, [result]);
-
-  const shuffle = (array) => {
-    // are shuffling function
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-  };
 
   const checkInput = (value) => {
     if (activeWordIndex === words.length) {
@@ -79,7 +68,7 @@ export default function Application() {
     if (value.endsWith(" ")) {
       // space means next word
 
-      if (activeWordIndex === words.length - 1) {
+      if (activeWordIndex === words.length - 1 || timeElapsed >= 60) {
         setStartCounting(false); // stop the counting
 
         setGameFinished(true); // game is finished
@@ -107,10 +96,10 @@ export default function Application() {
 
       if (word === words[activeWordIndex]) {
         //correct word
-        setCorrectWords([...correctWords, word]);
+        setCorrectWords([...correctWords, activeWordIndex]);
       } else {
         //incorrect word
-        setIncorrectWords([...incorrectWords, words[activeWordIndex]]);
+        setIncorrectWords([...incorrectWords, activeWordIndex]);
       }
     } else {
       // if this is not the end word update the state input state
@@ -134,21 +123,20 @@ export default function Application() {
 
   return (
     <>
-      <Header restartGame={restartGame} />
-      <div className="flex flex-col h-screen justify-start mt-12 md:justify-center items-center">
+      <div
+        className="flex flex-col justify-start md:justify-center items-center"
+        style={{ marginTop: "15rem" }}
+      >
         {loading ? ( // when it start loading
           <div className="flex justify-center">
             <div className="spinner">
-              <SpinnerDotted />
+              <SpinnerCircularFixed
+                style={{ width: "10rem", height: "10rem", color: "blue" }}
+              />
             </div>
           </div>
         ) : words.length === 0 ? ( // when it is empty
-          <button
-            className="bg-green-500 p-5 rounded-xl text-white"
-            onClick={getWords}
-          >
-            Get Words
-          </button>
+          getWords()
         ) : gameFinished ? ( // now word are filled then check if game is finished or not
           <>
             <div className="flex flex-col items-center">
@@ -159,7 +147,10 @@ export default function Application() {
                 setTimeElapsed={setTimeElapsed}
               />
 
-              <p className="w-1/2 border-green-500 border-4 p-8 rounded-lg">
+              <p
+                className="w-1/2 p-8 renderBlur leading-relaxed"
+                style={{ border: "2px solid red" }}
+              >
                 {words.map(
                   (
                     word,
@@ -169,8 +160,8 @@ export default function Application() {
                       key={index}
                       text={word}
                       active={index === activeWordIndex}
-                      correct={correctWords.includes(word)}
-                      incorrect={incorrectWords.includes(word)}
+                      correct={correctWords.includes(index)}
+                      incorrect={incorrectWords.includes(index)}
                     />
                   )
                 )}
@@ -181,11 +172,29 @@ export default function Application() {
               className="bg-green-500 border-2 border-gray-200
             rounded w-1/2 py-2 px-4 mt-12 text-white text-center text-xl
             focus:outline-none focus:bg-white focus:border-green-500"
+              style={{ fontSize: "2.2rem" }}
             >
               Game Finished !
             </div>
 
-            <ResultsModal result={result} WPM={WPM} timeElapsed={timeElapsed} />
+            <div className="bottom">
+              <SimpleButton
+                content="Restart Game"
+                type={"restartButton"}
+                action={restartGame}
+                buttonStyle={{
+                  fontSize: "2rem",
+                  padding: "0.5rem 1rem",
+                  marginTop: "3rem",
+                  cursor: "pointer",
+                }}
+              />
+              <ResultsModal
+                result={result}
+                WPM={WPM}
+                timeElapsed={timeElapsed}
+              />
+            </div>
           </>
         ) : (
           <>
@@ -197,28 +206,43 @@ export default function Application() {
                 setTimeElapsed={setTimeElapsed}
               />
 
-              <p className="w-1/2 border-green-500 border-4 p-8 rounded-lg">
+              <div
+                className="w-1/2 p-8 rounded-lg renderBlur"
+                style={{ lineHeight: 4 }}
+              >
                 {words.map((word, index) => (
                   <Word
                     key={index}
                     text={word}
                     active={index === activeWordIndex}
-                    correct={correctWords.includes(word)} // if it includes in correct word category
-                    incorrect={incorrectWords.includes(word)} // if it includes in correct word category
+                    correct={correctWords.includes(index)} // if it includes in correct word category
+                    incorrect={incorrectWords.includes(index)} // if it includes in correct word category
                   />
                 ))}
-              </p>
+              </div>
             </div>
 
             <input
+              autoFocus
               className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-1/2 py-2 px-4 mt-12 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-green-500 lowercase"
               type="text"
               value={userInput}
               onChange={(e) => checkInput(e.target.value.toLowerCase())}
-              placeholder="Type here..."
+              placeholder="start typing..."
+              style={{ fontSize: "2.6rem" }}
             />
 
-            <ResultsModal result={result} WPM={WPM} timeElapsed={timeElapsed} />
+            <SimpleButton
+              content="Restart Game"
+              type={"restartButton"}
+              action={restartGame}
+              buttonStyle={{
+                fontSize: "2rem",
+                padding: "0.5rem 1rem",
+                marginTop: "3rem",
+                cursor: "pointer",
+              }}
+            />
           </>
         )}
       </div>

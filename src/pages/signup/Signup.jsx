@@ -7,7 +7,7 @@ import { useSignup } from "../../hooks/auth/useSignup";
 import { useGoogleSignIn } from "../../hooks/auth/useGoogleSignIn";
 import { useMessageContext } from "../../hooks/context/useMessageContext";
 
-import Spinner from "../../components/loading/spinner/spinner";
+import Spinner from "../../components/loading-spinners/spinner/spinner";
 
 import eyePassword from "./../../assets/img/eye-password.png";
 import eyeText from "./../../assets/img/eye-text.png";
@@ -66,7 +66,7 @@ export default function SignUp() {
         onSubmit={handleSubmit}
         spellCheck="false"
       >
-        <h2>SignUp</h2>
+        <div style={{ fontSize: "3rem", fontWeight: "600" }}>SignUp</div>
         {googleSignInPending ? (
           <div className={styles["disabled"]}>
             <Spinner />

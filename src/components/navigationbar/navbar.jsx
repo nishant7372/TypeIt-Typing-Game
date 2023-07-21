@@ -33,7 +33,14 @@ export default function NavBar() {
 
         {user ? (
           <>
-            <div className={styles["nav-middle"]}></div>
+            <div className={styles["nav-middle"]}>
+              {/* <NavLink to="/articles">
+                <i className="fa-solid fa-bars"></i> &nbsp;My Articles
+              </NavLink>
+              <NavLink to="/shared">
+                <i className="fa-solid fa-bars"></i> &nbsp;Shared with me
+              </NavLink> */}
+            </div>
             <div className={styles["nav-right-auth"]}>
               <Link to="/">
                 {user.photoURL ? (

@@ -1,4 +1,4 @@
-.linear {
+.loading-spinner {
   text-align: center;
   display: flex;
 }
@@ -11,10 +11,10 @@
 }
 
 .mainRead {
-  position: absolute;
+  position: fixed;
   margin-top: calc(50vh - 50px);
   margin: auto;
-  height: calc(100% - 50px);
+  height: calc(100vh - 50px);
   width: 100%;
   align-items: center;
   gap: 1rem;
@@ -29,6 +29,10 @@
   justify-content: center;
 }
 
+.session-loading {
+  margin: 20rem auto;
+}
+
 .delete,
 .post {
   gap: 0.5rem;
@@ -37,7 +41,8 @@
 
 .users-loading > div,
 .mainRead > div,
-.read > div {
+.read > div,
+.session-loading > div {
   width: 2rem;
   height: 2rem;
 }
@@ -48,7 +53,7 @@
   height: 1.2rem;
 }
 
-.linear > div {
+.loading-spinner > div {
   background: linear-gradient(to right, #fff 0%, #ffd700 100%);
   border-radius: 100%;
   display: inline-block;
@@ -56,12 +61,12 @@
   animation: sk-bouncedelay 1.2s infinite ease-in-out both;
 }
 
-.linear .bounce1 {
+.loading-spinner .bounce1 {
   -webkit-animation-delay: -0.32s;
   animation-delay: -0.32s;
 }
 
-.linear .bounce2 {
+.loading-spinner .bounce2 {
   -webkit-animation-delay: -0.16s;
   animation-delay: -0.16s;
 }
