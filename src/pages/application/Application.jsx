@@ -62,9 +62,6 @@ export default function Application() {
   
   const [WPM, setWPM] = useState(0);
 
-  const accuracy =
-    (correctWords.length / (correctWords.length + incorrectWords.length)) * 100;
-
   const checkInput = (value) => {
     if (activeWordIndex === words.length) {
       return;
