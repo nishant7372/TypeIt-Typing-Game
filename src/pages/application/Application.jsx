@@ -147,25 +147,20 @@ export default function Application() {
                 setTimeElapsed={setTimeElapsed}
               />
 
-              <p
-                className="w-1/2 p-8 renderBlur leading-relaxed"
-                style={{ border: "2px solid red" }}
+              <div
+                className="w-1/2 p-8 rounded-lg renderBlur"
+                style={{ lineHeight: 4 }}
               >
-                {words.map(
-                  (
-                    word,
-                    index // final render of words
-                  ) => (
-                    <Word
-                      key={index}
-                      text={word}
-                      active={index === activeWordIndex}
-                      correct={correctWords.includes(index)}
-                      incorrect={incorrectWords.includes(index)}
-                    />
-                  )
-                )}
-              </p>
+                {words.map((word, index) => (
+                  <Word
+                    key={index}
+                    text={word}
+                    active={index === activeWordIndex}
+                    correct={correctWords.includes(index)} // if it includes in correct word category
+                    incorrect={incorrectWords.includes(index)} // if it includes in correct word category
+                  />
+                ))}
+              </div>
             </div>
 
             <div
@@ -224,10 +219,10 @@ export default function Application() {
 
             <input
               autoFocus
-              className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-1/2 py-2 px-4 mt-12 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-green-500 lowercase"
+              className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-1/2 py-2 px-4 mt-12 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-green-500"
               type="text"
               value={userInput}
-              onChange={(e) => checkInput(e.target.value.toLowerCase())}
+              onChange={(e) => checkInput(e.target.value)}
               placeholder="start typing..."
               style={{ fontSize: "2.6rem" }}
             />
