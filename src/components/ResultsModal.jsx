@@ -6,7 +6,12 @@ import { useApplicationContext } from "../hooks/context/useApplicationContext";
 const ResultsModal = () => {
   const [showModal, setShowModal] = useState(false);
   const { practiceResults } = useApplicationContext();
-  const [result, setResult] = useState(practiceResults);
+  const[result, setResult] = useState(practiceResults.sort((a,b) => {
+    return a.currentDate > b.currentDate ? 1
+    : a.currentDate < b.currentDate ? -1 
+    : a.time < b.time ? 1 : -1;
+  }))
+
   return (
     <>
       <SimpleButton
@@ -24,16 +29,18 @@ const ResultsModal = () => {
       {showModal ? (
         <>
           <div
-            className="justify-center flex fixed inset-0 z-50 outline-none focus:outline-none"
+            className="justify-center overflow-auto flex fixed inset-0 z-50 outline-none focus:outline-none"
             style={{
               fontSize: "2rem",
+              padding: "auto",
             }}
           >
-            <div className="relative w-full my-6 mx-auto max-w-3xl">
-              {/*content*/}
-              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
-                {/*header*/}
-                <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
+            <div className="relative  my-6 mx-auto max-w-7xl">
+              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none"
+                style={{
+                  width: "40vw",
+                }}>
+                <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t" >
                   <h3 className="text-3xl font-semibold">Results</h3>
                   <button
                     className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
@@ -47,16 +54,19 @@ const ResultsModal = () => {
                 <div
                   className="relative flex flex-col justify-center items-center m-5"
                   style={{
-                    maxHeight: "60vh",
+                    maxHeight: "70vh",
                     overflow: "auto",
+                    maxWidth: "80vw",
                   }}
                 >
-                  {result.map(({ WPM, timeElapsed, accuracy, id }) => (
+                  {result.map(({ WPM, timeElapsed, accuracy, id, currentDate, time }) => (
                     <ResultsTable
                       WPM={WPM}
                       timeElapsed={timeElapsed}
                       accuracy={accuracy}
                       key={id}
+                      date = {currentDate}
+                      time = {time}
                     />
                   ))}
                 </div>

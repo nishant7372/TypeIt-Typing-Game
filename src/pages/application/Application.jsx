@@ -79,6 +79,14 @@ export default function Application() {
         setGameFinished(true); // game is finished
 
         // setting storage
+        const today = new Date();
+        const month = today.getMonth() + 1;
+        const year = today.getFullYear();
+        const date = today.getDate();
+        const currentDate = month + "/" + date + "/" + year
+        const time = today.getHours()
+          + ':' + today.getMinutes()
+          + ":" + today.getSeconds()
 
         const fixedResults = {
           WPM: WPM.toFixed(2),
@@ -86,6 +94,8 @@ export default function Application() {
           id: uuid(),
           uid: user.uid,
           accuracy,
+          currentDate,
+          time
         };
         console.log(fixedResults);
         addDocument("PracticeResults", fixedResults);
@@ -159,6 +169,7 @@ export default function Application() {
                 setTimeElapsed={setTimeElapsed}
                 progress = {progress}
                 accuracy = {accuracy}
+                timeLimit = {timeLimit}
                 setTimeLimit={setTimeLimit}
                 WPM={WPM}
                 setWPM={setWPM}
@@ -213,6 +224,7 @@ export default function Application() {
                 setTimeElapsed={setTimeElapsed}
                 progress = {progress}
                 accuracy={accuracy}
+                timeLimit = {timeLimit}
                 setTimeLimit={setTimeLimit}
                 WPM={WPM}
                 setWPM={setWPM}
