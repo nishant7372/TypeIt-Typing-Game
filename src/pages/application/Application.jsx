@@ -31,11 +31,12 @@ export default function Application() {
 
   // timer states
   const [startCounting, setStartCounting] = useState(false);
-
   const [timeElapsed, setTimeElapsed] = useState(0);
+  const [progress, setProgress] = useState(0);
 
   // loading
   const [loading, setLoading] = useState(false);
+
   const [timeLimit, setTimeLimit] = useState(15);
 
   // game finished
@@ -52,6 +53,13 @@ export default function Application() {
     setWords(fetchParagraph);
     setLoading(false);
   };
+
+  const minutes = timeElapsed / 60; // Time cal
+
+  var accuracy = 0;
+  if(activeWordIndex == 0) accuracy = 100;
+  else accuracy = ((correctWords.length) / (activeWordIndex)) * 100;
+  
   const [WPM, setWPM] = useState(0);
 
   const accuracy =
@@ -62,6 +70,7 @@ export default function Application() {
       return;
     }
 
+    setProgress(((activeWordIndex + 1) * 100 / words.length).toFixed(2));
     setStartCounting(true); // timer starts
 
     if (value.endsWith(" ")) {
@@ -118,6 +127,8 @@ export default function Application() {
     setCorrectWords([]);
     setIncorrectWords([]);
     setStartCounting(false);
+    settimeLimit(15);
+    setProgress(0);
   };
 
   return (
@@ -149,12 +160,12 @@ export default function Application() {
                 correctWords={correctWords.length}
                 timeElapsed={timeElapsed}
                 setTimeElapsed={setTimeElapsed}
+                progress = {progress}
+                accuracy = {accuracy}
                 setTimeLimit={setTimeLimit}
                 WPM={WPM}
                 setWPM={setWPM}
               />
-
-              <Accuracy accuracy={accuracy} />
               <div
                 className="w-1/2 p-8 rounded-lg renderBlur"
                 style={{ lineHeight: 4 }}
@@ -203,6 +214,8 @@ export default function Application() {
                 correctWords={correctWords.length}
                 timeElapsed={timeElapsed}
                 setTimeElapsed={setTimeElapsed}
+                progress = {progress}
+                accuracy={accuracy}
                 setTimeLimit={setTimeLimit}
                 WPM={WPM}
                 setWPM={setWPM}
