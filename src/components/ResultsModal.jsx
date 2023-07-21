@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import ResultsTable from "./ResultsTable";
 import SimpleButton from "./button/simpleButton";
+import { useApplicationContext } from "../hooks/context/useApplicationContext";
 
-const ResultsModal = ({ result }) => {
+const ResultsModal = () => {
   const [showModal, setShowModal] = useState(false);
+  const { practiceResults } = useApplicationContext();
+  const [result, setResult] = useState(practiceResults);
   return (
     <>
       <SimpleButton

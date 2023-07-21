@@ -14,8 +14,14 @@ import Header from "../../components/Header";
 import ResultsModal from "../../components/ResultsModal";
 import { v4 as uuid } from "uuid";
 import SimpleButton from "../../components/button/simpleButton";
+import { useFirestore } from "../../hooks/application/useFirestore";
+import { useCollection } from "../../hooks/application/useCollection";
+import { useAuthContext } from "../../hooks/context/useAuthContext";
 
 export default function Application() {
+  const { user } = useAuthContext();
+  useCollection();
+  const { addDocument } = useFirestore();
   const [userInput, setUserInput] = useState(""); // state for user input
 
   const [words, setWords] = useState([]); // state for collecting words
@@ -31,13 +37,6 @@ export default function Application() {
 
   // loading
   const [loading, setLoading] = useState(false);
-
-  // Restart
-
-  // result
-  const [result, setResult] = useState(
-    JSON.parse(localStorage.getItem("storage") || "[]")
-  );
 
   // game finished
   const [gameFinished, setGameFinished] = useState(false); //state for game finished
@@ -57,10 +56,6 @@ export default function Application() {
 
   const minutes = timeElapsed / 60; // Time cal
   const WPM = correctWords.length / minutes; // WPM cal
-
-  useEffect(() => {
-    localStorage.setItem("storage", JSON.stringify(result));
-  }, [result]);
 
   const checkInput = (value) => {
     if (activeWordIndex === words.length) {
@@ -83,13 +78,10 @@ export default function Application() {
           WPM: WPM.toFixed(2),
           timeElapsed: timeElapsed,
           id: uuid(),
+          uid: user.uid,
         };
 
-        const newResult = [...result, fixedResults];
-
-        setResult(newResult);
-
-        localStorage.setItem("storage", JSON.stringify(result)); //local storage
+        addDocument("PracticeResults", fixedResults);
       } else {
         setUserInput("");
       }
@@ -111,6 +103,10 @@ export default function Application() {
     }
   };
 
+  useEffect(() => {
+    if (timeElapsed >= 60) checkInput(" ");
+  }, [timeElapsed]);
+
   const restartGame = () => {
     // game reset
     setGameFinished(false);
@@ -123,13 +119,11 @@ export default function Application() {
     setStartCounting(false);
   };
 
-  // first click the getword button -> spinner start spinning  -> words are loaded( word array )
-
   return (
     <>
       <div
         className="flex flex-col justify-start md:justify-center items-center"
-        style={{ marginTop: "15rem" }}
+        style={{ marginTop: "10rem" }}
       >
         {loading ? ( // when it start loading
           <div className="flex justify-center">
@@ -193,11 +187,7 @@ export default function Application() {
                   cursor: "pointer",
                 }}
               />
-              <ResultsModal
-                result={result}
-                WPM={WPM}
-                timeElapsed={timeElapsed}
-              />
+              <ResultsModal WPM={WPM} timeElapsed={timeElapsed} />
             </div>
           </>
         ) : (
