@@ -6,11 +6,14 @@ import { useApplicationContext } from "../hooks/context/useApplicationContext";
 const ResultsModal = () => {
   const [showModal, setShowModal] = useState(false);
   const { practiceResults } = useApplicationContext();
-  const[result, setResult] = useState(practiceResults.sort((a,b) => {
-    return a.currentDate > b.currentDate ? 1
-    : a.currentDate < b.currentDate ? -1 
-    : a.time < b.time ? 1 : -1;
-  }).slice(0, 5))
+  const [result, setResult] = useState(
+    practiceResults
+      .sort(
+        (a, b) =>
+          new Date(b.createdAt?.seconds) - new Date(a.createdAt?.seconds)
+      )
+      .slice(0, 5)
+  );
 
   return (
     <>
@@ -36,11 +39,13 @@ const ResultsModal = () => {
             }}
           >
             <div className="relative  my-6 mx-auto max-w-7xl">
-              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none"
+              <div
+                className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none"
                 style={{
                   width: "40vw",
-                }}>
-                <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t" >
+                }}
+              >
+                <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
                   <h3 className="text-3xl font-semibold">Results (Recent 5)</h3>
                   <button
                     className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
@@ -59,16 +64,18 @@ const ResultsModal = () => {
                     maxWidth: "80vw",
                   }}
                 >
-                  {result.map(({ WPM, timeElapsed, accuracy, id, currentDate, time }) => (
-                    <ResultsTable
-                      WPM={WPM}
-                      timeElapsed={timeElapsed}
-                      accuracy={accuracy}
-                      key={id}
-                      date = {currentDate}
-                      time = {time}
-                    />
-                  ))}
+                  {result.map(
+                    ({ WPM, timeElapsed, accuracy, id, currentDate, time }) => (
+                      <ResultsTable
+                        WPM={WPM}
+                        timeElapsed={timeElapsed}
+                        accuracy={accuracy}
+                        key={id}
+                        date={currentDate}
+                        time={time}
+                      />
+                    )
+                  )}
                 </div>
                 <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
                   <button
