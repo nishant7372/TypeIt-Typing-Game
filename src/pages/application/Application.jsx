@@ -7,7 +7,6 @@ import { SpinnerDotted } from "spinners-react";
 import Accuracy from "../../components/Accuracy";
 import Word from "../../components/Word";
 import Timer from "../../components/Timer";
-import Header from "../../components/Header";
 import ResultsModal from "../../components/ResultsModal";
 import { v4 as uuid } from "uuid";
 import SimpleButton from "../../components/button/simpleButton";
@@ -19,6 +18,7 @@ export default function Application() {
   const { user } = useAuthContext();
   useCollection();
   const { addDocument } = useFirestore();
+
   const [userInput, setUserInput] = useState(""); // state for user input
 
   const [words, setWords] = useState([]); // state for collecting words
@@ -26,16 +26,18 @@ export default function Application() {
   const [activeWordIndex, setActiveWordIndex] = useState(0); // state which show current word
 
   const [correctWords, setCorrectWords] = useState([]); //state for correct word
+
   const [incorrectWords, setIncorrectWords] = useState([]); // state for incorrect word
 
   // timer states
   const [startCounting, setStartCounting] = useState(false);
   const [timeElapsed, setTimeElapsed] = useState(0);
-  const [timeLimit, settimeLimit] = useState(15);
   const [progress, setProgress] = useState(0);
 
   // loading
   const [loading, setLoading] = useState(false);
+
+  const [timeLimit, setTimeLimit] = useState(15);
 
   // game finished
   const [gameFinished, setGameFinished] = useState(false); //state for game finished
@@ -44,8 +46,7 @@ export default function Application() {
     //data fetching
 
     setLoading(true); //data is loading
-    let x = Math.floor(Math.random() * 10 + 1);
-    if (x < 3) x = 3;
+    let x = Math.floor(Math.random() * (10 - 5 + 1)) + 5;
     const tempUrl = "http://metaphorpsum.com/paragraphs/1/" + x.toString();
     const { data } = await axios.get(tempUrl);
     const fetchParagraph = data.split(" ");
@@ -58,8 +59,11 @@ export default function Application() {
   var accuracy = 0;
   if(activeWordIndex == 0) accuracy = 100;
   else accuracy = ((correctWords.length) / (activeWordIndex)) * 100;
-  const WPM = (correctWords.length + incorrectWords.length) / minutes * accuracy; // WPM cal
   
+  const [WPM, setWPM] = useState(0);
+
+  const accuracy =
+    (correctWords.length / (correctWords.length + incorrectWords.length)) * 100;
 
   const checkInput = (value) => {
     if (activeWordIndex === words.length) {
@@ -81,11 +85,12 @@ export default function Application() {
 
         const fixedResults = {
           WPM: WPM.toFixed(2),
-          timeElapsed: timeElapsed,
+          timeElapsed,
           id: uuid(),
           uid: user.uid,
+          accuracy,
         };
-
+        console.log(fixedResults);
         addDocument("PracticeResults", fixedResults);
       } else {
         setUserInput("");
@@ -155,9 +160,11 @@ export default function Application() {
                 correctWords={correctWords.length}
                 timeElapsed={timeElapsed}
                 setTimeElapsed={setTimeElapsed}
-                settimeLimit = {settimeLimit}
                 progress = {progress}
                 accuracy = {accuracy}
+                setTimeLimit={setTimeLimit}
+                WPM={WPM}
+                setWPM={setWPM}
               />
               <div
                 className="w-1/2 p-8 rounded-lg renderBlur"
@@ -207,9 +214,11 @@ export default function Application() {
                 correctWords={correctWords.length}
                 timeElapsed={timeElapsed}
                 setTimeElapsed={setTimeElapsed}
-                settimeLimit = {settimeLimit}
                 progress = {progress}
                 accuracy={accuracy}
+                setTimeLimit={setTimeLimit}
+                WPM={WPM}
+                setWPM={setWPM}
               />
 
               <div

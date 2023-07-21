@@ -51,10 +51,11 @@ const ResultsModal = () => {
                     overflow: "auto",
                   }}
                 >
-                  {result.map(({ WPM, timeElapsed, id }) => (
+                  {result.map(({ WPM, timeElapsed, accuracy, id }) => (
                     <ResultsTable
                       WPM={WPM}
                       timeElapsed={timeElapsed}
+                      accuracy={accuracy}
                       key={id}
                     />
                   ))}
