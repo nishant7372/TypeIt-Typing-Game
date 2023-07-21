@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import Progress from "./Progress";
 import Accuracy from "./Accuracy";
 import { useState } from "react";
+import { doc } from "firebase/firestore";
 
 const Timer = ({
   startCounting,
@@ -14,6 +15,9 @@ const Timer = ({
   setTimeLimit,
   WPM,
   setWPM,
+  difficulty,
+  setDifficulty,
+  getWords
 }) => {
   useEffect(() => {
     if (startCounting) {
@@ -37,7 +41,6 @@ const Timer = ({
 
   let time = true;
 
-  console.log(timeElapsed, timeLimit);
   if (timeElapsed >= (timeLimit * 0.8)) time = false;
   let chooseTime = true;
   if (timeElapsed > 0) chooseTime = false;
@@ -95,7 +98,13 @@ const Timer = ({
         </span>
       </div>
 
-        <Accuracy accuracy = {accuracy} />
+        <Accuracy 
+          accuracy = {accuracy} 
+          timeElapsed = {timeElapsed}
+          getWords = {getWords}
+          difficulty={difficulty}
+          setDifficulty= {setDifficulty}
+         />
       
     </div>
       <Progress progress = {progress} />

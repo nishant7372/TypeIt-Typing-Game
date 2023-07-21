@@ -36,19 +36,20 @@ export default function Application() {
 
   // loading
   const [loading, setLoading] = useState(false);
-
   const [timeLimit, setTimeLimit] = useState(15);
 
   // game finished
   const [gameFinished, setGameFinished] = useState(false); //state for game finished
 
-  const getWords = async () => {
-    //data fetching
+  //difficlty
+  const [difficulty, setDifficulty] = useState(1);
 
+  const getWords = async () => {
     setLoading(true); //data is loading
     let x = Math.floor(Math.random() * (10 - 5 + 1)) + 5;
     const tempUrl = "http://metaphorpsum.com/paragraphs/1/" + x.toString();
-    const { data } = await axios.get(tempUrl);
+    var { data } = await axios.get(tempUrl);
+    if(difficulty == 1) data = data.toLowerCase();
     const fetchParagraph = data.split(" ");
     setWords(fetchParagraph);
     setLoading(false);
@@ -83,6 +84,7 @@ export default function Application() {
         const month = today.getMonth() + 1;
         const year = today.getFullYear();
         const date = today.getDate();
+
         const currentDate = month + "/" + date + "/" + year;
         const time =
           today.getHours() +
@@ -127,8 +129,11 @@ export default function Application() {
     if (timeElapsed >= timeLimit) checkInput(" ");
   }, [timeElapsed]);
 
+  useEffect(() => {
+    getWords();
+  },[difficulty])
+
   const restartGame = () => {
-    // game reset
     setGameFinished(false);
     getWords();
     setUserInput("");
@@ -145,8 +150,10 @@ export default function Application() {
     <>
       <div
         className="flex flex-col justify-start md:justify-center items-center"
-        style={{ marginTop: "10rem" }}
+        style={{ marginTop: "8rem" }}
       >
+
+
         {loading ? ( // when it start loading
           <div className="flex justify-center">
             <div className="spinner">
@@ -176,6 +183,9 @@ export default function Application() {
                 setTimeLimit={setTimeLimit}
                 WPM={WPM}
                 setWPM={setWPM}
+                difficulty={difficulty}
+                setDifficulty={setDifficulty}
+                getWords = {getWords}
               />
               <div
                 className="w-1/2 p-8 rounded-lg renderBlur"
@@ -231,6 +241,9 @@ export default function Application() {
                 setTimeLimit={setTimeLimit}
                 WPM={WPM}
                 setWPM={setWPM}
+                difficulty={difficulty}
+                setDifficulty={setDifficulty}
+                getWords = {getWords}
               />
 
               <div
