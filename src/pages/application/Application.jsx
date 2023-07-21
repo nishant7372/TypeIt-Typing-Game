@@ -57,9 +57,9 @@ export default function Application() {
   const minutes = timeElapsed / 60; // Time cal
 
   var accuracy = 0;
-  if(activeWordIndex == 0) accuracy = 100;
-  else accuracy = ((correctWords.length) / (activeWordIndex)) * 100;
-  
+  if (activeWordIndex == 0) accuracy = 100;
+  else accuracy = (correctWords.length / activeWordIndex) * 100;
+
   const [WPM, setWPM] = useState(0);
 
   const checkInput = (value) => {
@@ -67,7 +67,7 @@ export default function Application() {
       return;
     }
 
-    setProgress(((activeWordIndex + 1) * 100 / words.length).toFixed(2));
+    setProgress((((activeWordIndex + 1) * 100) / words.length).toFixed(2));
     setStartCounting(true); // timer starts
 
     if (value.endsWith(" ")) {
@@ -83,10 +83,13 @@ export default function Application() {
         const month = today.getMonth() + 1;
         const year = today.getFullYear();
         const date = today.getDate();
-        const currentDate = month + "/" + date + "/" + year
-        const time = today.getHours()
-          + ':' + today.getMinutes()
-          + ":" + today.getSeconds()
+        const currentDate = month + "/" + date + "/" + year;
+        const time =
+          today.getHours() +
+          ":" +
+          today.getMinutes() +
+          ":" +
+          today.getSeconds();
 
         const fixedResults = {
           WPM: WPM.toFixed(2),
@@ -95,7 +98,7 @@ export default function Application() {
           uid: user.uid,
           accuracy,
           currentDate,
-          time
+          time,
         };
         console.log(fixedResults);
         addDocument("PracticeResults", fixedResults);
@@ -134,7 +137,7 @@ export default function Application() {
     setCorrectWords([]);
     setIncorrectWords([]);
     setStartCounting(false);
-    settimeLimit(15);
+    setTimeLimit(15);
     setProgress(0);
   };
 
@@ -167,9 +170,9 @@ export default function Application() {
                 correctWords={correctWords.length}
                 timeElapsed={timeElapsed}
                 setTimeElapsed={setTimeElapsed}
-                progress = {progress}
-                accuracy = {accuracy}
-                timeLimit = {timeLimit}
+                progress={progress}
+                accuracy={accuracy}
+                timeLimit={timeLimit}
                 setTimeLimit={setTimeLimit}
                 WPM={WPM}
                 setWPM={setWPM}
@@ -222,9 +225,9 @@ export default function Application() {
                 correctWords={correctWords.length}
                 timeElapsed={timeElapsed}
                 setTimeElapsed={setTimeElapsed}
-                progress = {progress}
+                progress={progress}
                 accuracy={accuracy}
-                timeLimit = {timeLimit}
+                timeLimit={timeLimit}
                 setTimeLimit={setTimeLimit}
                 WPM={WPM}
                 setWPM={setWPM}
