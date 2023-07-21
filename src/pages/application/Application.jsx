@@ -7,7 +7,6 @@ import { SpinnerDotted } from "spinners-react";
 import Accuracy from "../../components/Accuracy";
 import Word from "../../components/Word";
 import Timer from "../../components/Timer";
-import Header from "../../components/Header";
 import ResultsModal from "../../components/ResultsModal";
 import { v4 as uuid } from "uuid";
 import SimpleButton from "../../components/button/simpleButton";
@@ -19,6 +18,7 @@ export default function Application() {
   const { user } = useAuthContext();
   useCollection();
   const { addDocument } = useFirestore();
+
   const [userInput, setUserInput] = useState(""); // state for user input
 
   const [words, setWords] = useState([]); // state for collecting words
@@ -26,6 +26,7 @@ export default function Application() {
   const [activeWordIndex, setActiveWordIndex] = useState(0); // state which show current word
 
   const [correctWords, setCorrectWords] = useState([]); //state for correct word
+
   const [incorrectWords, setIncorrectWords] = useState([]); // state for incorrect word
 
   // timer states
@@ -35,7 +36,7 @@ export default function Application() {
 
   // loading
   const [loading, setLoading] = useState(false);
-  const [timeLimit, settimeLimit] = useState(15);
+  const [timeLimit, setTimeLimit] = useState(15);
 
   // game finished
   const [gameFinished, setGameFinished] = useState(false); //state for game finished
@@ -52,10 +53,7 @@ export default function Application() {
     setWords(fetchParagraph);
     setLoading(false);
   };
-
-  const minutes = timeElapsed / 60; // Time cal
-
-  const WPM = (correctWords.length + incorrectWords.length) / minutes; // WPM cal
+  const [WPM, setWPM] = useState(0);
 
   const accuracy =
     (correctWords.length / (correctWords.length + incorrectWords.length)) * 100;
@@ -79,11 +77,12 @@ export default function Application() {
 
         const fixedResults = {
           WPM: WPM.toFixed(2),
-          timeElapsed: timeElapsed,
+          timeElapsed,
           id: uuid(),
           uid: user.uid,
+          accuracy,
         };
-
+        console.log(fixedResults);
         addDocument("PracticeResults", fixedResults);
       } else {
         setUserInput("");
@@ -151,7 +150,9 @@ export default function Application() {
                 correctWords={correctWords.length}
                 timeElapsed={timeElapsed}
                 setTimeElapsed={setTimeElapsed}
-                settimeLimit={settimeLimit}
+                setTimeLimit={setTimeLimit}
+                WPM={WPM}
+                setWPM={setWPM}
               />
 
               <Accuracy accuracy={accuracy} />
@@ -203,7 +204,9 @@ export default function Application() {
                 correctWords={correctWords.length}
                 timeElapsed={timeElapsed}
                 setTimeElapsed={setTimeElapsed}
-                settimeLimit={settimeLimit}
+                setTimeLimit={setTimeLimit}
+                WPM={WPM}
+                setWPM={setWPM}
               />
 
               <div
