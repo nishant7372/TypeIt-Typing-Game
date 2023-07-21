@@ -45,8 +45,7 @@ export default function Application() {
     //data fetching
 
     setLoading(true); //data is loading
-    let x = Math.floor(Math.random() * 10 + 1);
-    if (x < 3) x = 3;
+    let x = Math.floor(Math.random() * (10 - 5 + 1)) + 5;
     const tempUrl = "http://metaphorpsum.com/paragraphs/1/" + x.toString();
     const { data } = await axios.get(tempUrl);
     const fetchParagraph = data.split(" ");
