@@ -27,14 +27,16 @@ export default function NameLogo({ logoStyle, name }) {
   }
 
   return (
-    <div
-      title={name}
-      className={`${styles["userNameLogo"]} ${
-        styles[colors[hash(name.toLowerCase())]]
-      }`}
-      style={logoStyle}
-    >
-      {getFirstLetters(name)}
-    </div>
+    name && (
+      <div
+        title={name}
+        className={`${styles["userNameLogo"]} ${
+          styles[colors[hash(name.toLowerCase())]]
+        }`}
+        style={logoStyle}
+      >
+        {getFirstLetters(name)}
+      </div>
+    )
   );
 }

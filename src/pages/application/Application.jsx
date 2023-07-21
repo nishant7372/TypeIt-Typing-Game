@@ -1,17 +1,24 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 // spinner
-import { SpinnerCircularFixed } from "spinners-react";
+import { SpinnerDotted } from "spinners-react";
 
 // components
+import Accuracy from "../../components/Accuracy";
 import Word from "../../components/Word";
 import Timer from "../../components/Timer";
 import Header from "../../components/Header";
 import ResultsModal from "../../components/ResultsModal";
 import { v4 as uuid } from "uuid";
 import SimpleButton from "../../components/button/simpleButton";
+import { useFirestore } from "../../hooks/application/useFirestore";
+import { useCollection } from "../../hooks/application/useCollection";
+import { useAuthContext } from "../../hooks/context/useAuthContext";
 
 export default function Application() {
+  const { user } = useAuthContext();
+  useCollection();
+  const { addDocument } = useFirestore();
   const [userInput, setUserInput] = useState(""); // state for user input
 
   const [words, setWords] = useState([]); // state for collecting words
@@ -23,18 +30,12 @@ export default function Application() {
 
   // timer states
   const [startCounting, setStartCounting] = useState(false);
+
   const [timeElapsed, setTimeElapsed] = useState(0);
 
   // loading
   const [loading, setLoading] = useState(false);
   const [timeLimit, settimeLimit] = useState(15);
-
-  // Restart
-
-  // result
-  const [result, setResult] = useState(
-    JSON.parse(localStorage.getItem("storage") || "[]")
-  );
 
   // game finished
   const [gameFinished, setGameFinished] = useState(false); //state for game finished
@@ -53,11 +54,11 @@ export default function Application() {
   };
 
   const minutes = timeElapsed / 60; // Time cal
-  const WPM = correctWords.length / minutes; // WPM cal
 
-  useEffect(() => {
-    localStorage.setItem("storage", JSON.stringify(result));
-  }, [result]);
+  const WPM = (correctWords.length + incorrectWords.length) / minutes; // WPM cal
+
+  const accuracy =
+    (correctWords.length / (correctWords.length + incorrectWords.length)) * 100;
 
   const checkInput = (value) => {
     if (activeWordIndex === words.length) {
@@ -80,13 +81,10 @@ export default function Application() {
           WPM: WPM.toFixed(2),
           timeElapsed: timeElapsed,
           id: uuid(),
+          uid: user.uid,
         };
 
-        const newResult = [...result, fixedResults];
-
-        setResult(newResult);
-
-        localStorage.setItem("storage", JSON.stringify(result)); //local storage
+        addDocument("PracticeResults", fixedResults);
       } else {
         setUserInput("");
       }
@@ -108,6 +106,10 @@ export default function Application() {
     }
   };
 
+  useEffect(() => {
+    if (timeElapsed >= 60) checkInput(" ");
+  }, [timeElapsed]);
+
   const restartGame = () => {
     // game reset
     setGameFinished(false);
@@ -120,19 +122,22 @@ export default function Application() {
     setStartCounting(false);
   };
 
-  // first click the getword button -> spinner start spinning  -> words are loaded( word array )
-
   return (
     <>
       <div
         className="flex flex-col justify-start md:justify-center items-center"
-        style={{ marginTop: "15rem" }}
+        style={{ marginTop: "10rem" }}
       >
         {loading ? ( // when it start loading
           <div className="flex justify-center">
             <div className="spinner">
-              <SpinnerCircularFixed
-                style={{ width: "10rem", height: "10rem", color: "blue" }}
+              <SpinnerDotted
+                style={{
+                  width: "10rem",
+                  height: "10rem",
+                  color: "magenta",
+                  marginTop: "15rem",
+                }}
               />
             </div>
           </div>
@@ -149,25 +154,21 @@ export default function Application() {
                 settimeLimit = {settimeLimit}
               />
 
-              <p
-                className="w-1/2 p-8 renderBlur leading-relaxed"
-                style={{ border: "2px solid red" }}
+              <Accuracy accuracy={accuracy} />
+              <div
+                className="w-1/2 p-8 rounded-lg renderBlur"
+                style={{ lineHeight: 4 }}
               >
-                {words.map(
-                  (
-                    word,
-                    index // final render of words
-                  ) => (
-                    <Word
-                      key={index}
-                      text={word}
-                      active={index === activeWordIndex}
-                      correct={correctWords.includes(index)}
-                      incorrect={incorrectWords.includes(index)}
-                    />
-                  )
-                )}
-              </p>
+                {words.map((word, index) => (
+                  <Word
+                    key={index}
+                    text={word}
+                    active={index === activeWordIndex}
+                    correct={correctWords.includes(index)} // if it includes in correct word category
+                    incorrect={incorrectWords.includes(index)} // if it includes in correct word category
+                  />
+                ))}
+              </div>
             </div>
 
             <div
@@ -191,11 +192,7 @@ export default function Application() {
                   cursor: "pointer",
                 }}
               />
-              <ResultsModal
-                result={result}
-                WPM={WPM}
-                timeElapsed={timeElapsed}
-              />
+              <ResultsModal WPM={WPM} timeElapsed={timeElapsed} />
             </div>
           </>
         ) : (

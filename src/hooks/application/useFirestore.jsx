@@ -18,7 +18,6 @@ export const useFirestore = () => {
 
   //add a document
   const addDocument = async (collectionName, doc) => {
-    applicationDispatch({ type: "IS_ADD_PENDING", payload: true });
     try {
       const timestamp = serverTimestamp();
       await addDoc(collection(firestore, collectionName), {
@@ -30,8 +29,6 @@ export const useFirestore = () => {
       return { ok: true };
     } catch (err) {
       messageDispatch({ type: "ERROR", payload: err.message });
-    } finally {
-      applicationDispatch({ type: "IS_ADD_PENDING", payload: false });
     }
   };
 
