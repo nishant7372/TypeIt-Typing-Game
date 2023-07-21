@@ -20,12 +20,16 @@ const ResultsModal = ({ result }) => {
       />
       {showModal ? (
         <>
+<<<<<<< HEAD
           <div
             className="justify-center items-center flex fixed inset-0 z-50 outline-none focus:outline-none"
             style={{
               fontSize: "2rem",
             }}
           >
+=======
+          <div className="justify-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+>>>>>>> 5670c157e3f99ce9851b7a3beec678bbb50ed762
             <div className="relative w-full my-6 mx-auto max-w-3xl">
               {/*content*/}
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
