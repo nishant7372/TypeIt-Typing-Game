@@ -59,10 +59,6 @@ export default function Application() {
   const accuracy =
     (correctWords.length / (correctWords.length + incorrectWords.length)) * 100;
 
-  useEffect(() => {
-    localStorage.setItem("storage", JSON.stringify(result));
-  }, [result]);
-
   const checkInput = (value) => {
     if (activeWordIndex === words.length) {
       return;
@@ -152,26 +148,20 @@ export default function Application() {
               />
 
               <Accuracy accuracy={accuracy} />
-
-              <p
-                className="w-1/2 p-8 renderBlur leading-relaxed"
-                style={{ border: "2px solid red" }}
+              <div
+                className="w-1/2 p-8 rounded-lg renderBlur"
+                style={{ lineHeight: 4 }}
               >
-                {words.map(
-                  (
-                    word,
-                    index // final render of words
-                  ) => (
-                    <Word
-                      key={index}
-                      text={word}
-                      active={index === activeWordIndex}
-                      correct={correctWords.includes(index)}
-                      incorrect={incorrectWords.includes(index)}
-                    />
-                  )
-                )}
-              </p>
+                {words.map((word, index) => (
+                  <Word
+                    key={index}
+                    text={word}
+                    active={index === activeWordIndex}
+                    correct={correctWords.includes(index)} // if it includes in correct word category
+                    incorrect={incorrectWords.includes(index)} // if it includes in correct word category
+                  />
+                ))}
+              </div>
             </div>
 
             <div
