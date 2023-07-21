@@ -5,6 +5,7 @@ const Timer = ({
   correctWords,
   timeElapsed,
   setTimeElapsed,
+  settimeLimit
 }) => {
   useEffect(() => {
     if (startCounting) {
@@ -18,12 +19,36 @@ const Timer = ({
 
   const minutes = timeElapsed / 60;
   const WPM = correctWords / minutes;
-  var time = false;
-  if (timeElapsed > 40) time = true;
+  var time = true;
+  if (timeElapsed > 40) time = false;
+  var chooseTime = true;
+  if(timeElapsed > 0) chooseTime = false;
+  var choosen = -1;
+  if(chooseTime) {
+    if (document.querySelector('#choose')) {
+      choosen = document.querySelector('#choose').value;
+      settimeLimit(choosen);
+    }
+  }
 
   return (
     <div className="flex justify-center items-center mb-12">
-      {time == false ? (
+      {chooseTime ? (
+        <div className="choose">
+          <div className="bg-blue-500 p-3 rounded-xl mr-10 ">
+            <span className="font-semibold bg-blue-500 mr-4 text-xl sm:text-5xl tracking-tight text-black">
+              <label className = "mr-4" htmlFor = "choose"> Choose Time   </label>
+              <select className = "m-auto pl-2 !outline-none text-4xl" id="choose" defaultValue={15}>
+                <option value="15">15</option>
+                <option value="30">30</option>
+                <option value="45">45</option>
+                <option value="60">60</option>
+              </select>
+            </span>
+          </div>
+        </div>
+      )
+      : time ? (
         <div className="bg-blue-500 p-3 rounded-xl mr-10 ">
           <span className="font-semibold bg-blue-500 text-xl sm:text-5xl tracking-tight text-white">
             Time: {timeElapsed}

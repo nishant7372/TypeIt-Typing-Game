@@ -35,6 +35,7 @@ export default function Application() {
 
   // loading
   const [loading, setLoading] = useState(false);
+  const [timeLimit, settimeLimit] = useState(15);
 
   // game finished
   const [gameFinished, setGameFinished] = useState(false); //state for game finished
@@ -69,7 +70,7 @@ export default function Application() {
     if (value.endsWith(" ")) {
       // space means next word
 
-      if (activeWordIndex === words.length - 1 || timeElapsed >= 60) {
+      if (activeWordIndex === words.length - 1 || timeElapsed >= timeLimit) {
         setStartCounting(false); // stop the counting
 
         setGameFinished(true); // game is finished
@@ -150,6 +151,7 @@ export default function Application() {
                 correctWords={correctWords.length}
                 timeElapsed={timeElapsed}
                 setTimeElapsed={setTimeElapsed}
+                settimeLimit = {settimeLimit}
               />
 
               <Accuracy accuracy={accuracy} />
@@ -201,10 +203,11 @@ export default function Application() {
                 correctWords={correctWords.length}
                 timeElapsed={timeElapsed}
                 setTimeElapsed={setTimeElapsed}
+                settimeLimit = {settimeLimit}
               />
 
               <div
-                className="w-1/2 p-8 rounded-lg renderBlur"
+                className="w-1/2 p-8 pt-4 rounded-lg renderBlur"
                 style={{ lineHeight: 4 }}
               >
                 {words.map((word, index) => (

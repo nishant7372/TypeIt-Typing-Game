@@ -12,6 +12,16 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+ @layer base {
+        input[type='number']::-webkit-outer-spin-button,
+        input[type='number']::-webkit-inner-spin-button,
+        input[type='number'] {
+          -webkit-appearance: none;
+          margin: 0;
+          -moz-appearance: textfield !important;
+        }
+     }
+
 /* 1rem = 16px -> 100% 
    1rem = 10px -> 62.5%
    1rem = 9px  -> 56.25%
