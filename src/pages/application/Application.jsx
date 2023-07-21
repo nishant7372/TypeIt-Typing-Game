@@ -107,7 +107,7 @@ export default function Application() {
   };
 
   useEffect(() => {
-    if (timeElapsed >= 60) checkInput(" ");
+    if (timeElapsed >= timeLimit) checkInput(" ");
   }, [timeElapsed]);
 
   const restartGame = () => {
@@ -151,7 +151,7 @@ export default function Application() {
                 correctWords={correctWords.length}
                 timeElapsed={timeElapsed}
                 setTimeElapsed={setTimeElapsed}
-                settimeLimit = {settimeLimit}
+                settimeLimit={settimeLimit}
               />
 
               <Accuracy accuracy={accuracy} />
@@ -203,7 +203,7 @@ export default function Application() {
                 correctWords={correctWords.length}
                 timeElapsed={timeElapsed}
                 setTimeElapsed={setTimeElapsed}
-                settimeLimit = {settimeLimit}
+                settimeLimit={settimeLimit}
               />
 
               <div
