@@ -49,11 +49,24 @@ export default function Application() {
     let x = Math.floor(Math.random() * (10 - 5 + 1)) + 5;
     const tempUrl = "http://metaphorpsum.com/paragraphs/1/" + x.toString();
     var { data } = await axios.get(tempUrl);
-    if(difficulty == 1) data = data.toLowerCase();
-    const fetchParagraph = data.split(" ");
+    if (difficulty == 1) data = data.toLowerCase();
+    let fetchParagraph = data.split(" ");
+    if (difficulty == 2) fetchParagraph = shuffleArray(fetchParagraph);
     setWords(fetchParagraph);
     setLoading(false);
   };
+
+  function shuffleArray(array) {
+    const shuffledArray = [...array];
+    for (let i = shuffledArray.length - 1; i > 0; i--) {
+      const randomIndex = Math.floor(Math.random() * (i + 1));
+      [shuffledArray[i], shuffledArray[randomIndex]] = [
+        shuffledArray[randomIndex],
+        shuffledArray[i],
+      ];
+    }
+    return shuffledArray.filter((item) => item.length > 3);
+  }
 
   const minutes = timeElapsed / 60; // Time cal
 
@@ -131,7 +144,7 @@ export default function Application() {
 
   useEffect(() => {
     getWords();
-  },[difficulty])
+  }, [difficulty]);
 
   const restartGame = () => {
     setGameFinished(false);
@@ -152,8 +165,6 @@ export default function Application() {
         className="flex flex-col justify-start md:justify-center items-center"
         style={{ marginTop: "8rem" }}
       >
-
-
         {loading ? ( // when it start loading
           <div className="flex justify-center">
             <div className="spinner">
@@ -185,7 +196,7 @@ export default function Application() {
                 setWPM={setWPM}
                 difficulty={difficulty}
                 setDifficulty={setDifficulty}
-                getWords = {getWords}
+                getWords={getWords}
               />
               <div
                 className="w-1/2 p-8 rounded-lg renderBlur"
@@ -243,7 +254,7 @@ export default function Application() {
                 setWPM={setWPM}
                 difficulty={difficulty}
                 setDifficulty={setDifficulty}
-                getWords = {getWords}
+                getWords={getWords}
               />
 
               <div
