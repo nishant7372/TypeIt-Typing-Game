@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import styles from "./Home.module.css";
 
+import typingImg from "./../../assets/img/typing.jpg";
+
 export default function Home() {
   return (
     <div className={styles["container"]}>
@@ -10,6 +12,7 @@ export default function Home() {
       <Link className={styles["subContainer"]} to="/multiPlayer/match">
         Multi Player
       </Link>
+      <img className={styles.backgroundImg} src={typingImg} alt="typing" />
     </div>
   );
 }
