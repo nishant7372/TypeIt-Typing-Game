@@ -1,11 +1,15 @@
 import React, { useEffect } from "react";
+import Progress from "./Progress";
+import Accuracy from "./Accuracy";
 
 const Timer = ({
   startCounting,
   correctWords,
   timeElapsed,
   setTimeElapsed,
-  settimeLimit
+  settimeLimit,
+  progress,
+  accuracy
 }) => {
   useEffect(() => {
     if (startCounting) {
@@ -31,7 +35,7 @@ const Timer = ({
     }
   }
 
-  return (
+  return (<>
     <div className="flex justify-center items-center mb-12">
       {chooseTime ? (
         <div className="choose">
@@ -67,7 +71,12 @@ const Timer = ({
           WPM: {(WPM | 0).toFixed(2)}
         </span>
       </div>
+
+        <Accuracy accuracy = {accuracy} />
+      
     </div>
+      <Progress progress = {progress} />
+      </>
   );
 };
 

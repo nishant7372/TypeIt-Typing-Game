@@ -30,12 +30,12 @@ export default function Application() {
 
   // timer states
   const [startCounting, setStartCounting] = useState(false);
-
   const [timeElapsed, setTimeElapsed] = useState(0);
+  const [timeLimit, settimeLimit] = useState(15);
+  const [progress, setProgress] = useState(0);
 
   // loading
   const [loading, setLoading] = useState(false);
-  const [timeLimit, settimeLimit] = useState(15);
 
   // game finished
   const [gameFinished, setGameFinished] = useState(false); //state for game finished
@@ -55,16 +55,18 @@ export default function Application() {
 
   const minutes = timeElapsed / 60; // Time cal
 
-  const WPM = (correctWords.length + incorrectWords.length) / minutes; // WPM cal
-
-  const accuracy =
-    (correctWords.length / (correctWords.length + incorrectWords.length)) * 100;
+  var accuracy = 0;
+  if(activeWordIndex == 0) accuracy = 100;
+  else accuracy = ((correctWords.length) / (activeWordIndex)) * 100;
+  const WPM = (correctWords.length + incorrectWords.length) / minutes * accuracy; // WPM cal
+  
 
   const checkInput = (value) => {
     if (activeWordIndex === words.length) {
       return;
     }
 
+    setProgress(((activeWordIndex + 1) * 100 / words.length).toFixed(2));
     setStartCounting(true); // timer starts
 
     if (value.endsWith(" ")) {
@@ -107,7 +109,7 @@ export default function Application() {
   };
 
   useEffect(() => {
-    if (timeElapsed >= 60) checkInput(" ");
+    if (timeElapsed >= timeLimit) checkInput(" ");
   }, [timeElapsed]);
 
   const restartGame = () => {
@@ -120,6 +122,8 @@ export default function Application() {
     setCorrectWords([]);
     setIncorrectWords([]);
     setStartCounting(false);
+    settimeLimit(15);
+    setProgress(0);
   };
 
   return (
@@ -152,9 +156,9 @@ export default function Application() {
                 timeElapsed={timeElapsed}
                 setTimeElapsed={setTimeElapsed}
                 settimeLimit = {settimeLimit}
+                progress = {progress}
+                accuracy = {accuracy}
               />
-
-              <Accuracy accuracy={accuracy} />
               <div
                 className="w-1/2 p-8 rounded-lg renderBlur"
                 style={{ lineHeight: 4 }}
@@ -204,6 +208,8 @@ export default function Application() {
                 timeElapsed={timeElapsed}
                 setTimeElapsed={setTimeElapsed}
                 settimeLimit = {settimeLimit}
+                progress = {progress}
+                accuracy={accuracy}
               />
 
               <div
