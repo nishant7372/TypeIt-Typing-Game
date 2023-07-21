@@ -1,0 +1,26 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  margin-top: 20rem;
+}
+
+.subContainer {
+  font-size: 4rem;
+  background-color: rgb(231, 57, 57);
+  cursor: pointer;
+  text-decoration: none;
+  padding: 4rem;
+  border-radius: 8px;
+  color: white;
+}
+
+.subContainer:hover {
+  font-size: 4rem;
+  background-color: rgb(234, 27, 27);
+  cursor: pointer;
+  text-decoration: none;
+  padding: 4rem;
+  border-radius: 8px;
+  color: white;
+}

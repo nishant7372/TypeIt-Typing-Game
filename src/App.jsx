@@ -4,6 +4,7 @@ import LogIn from "./pages/login/Login";
 import SignUp from "./pages/signup/Signup";
 import NavBar from "./components/navigationbar/navbar";
 import Verify from "./pages/verify/Verify";
+import Home from "./pages/home/Home";
 import {
   BrowserRouter as Router,
   Routes,
@@ -26,7 +27,7 @@ export default function App() {
                 !user ? (
                   <Navigate to="/login" />
                 ) : isAccountVerified ? (
-                  <Application />
+                  <Home />
                 ) : (
                   <Verify />
                 )
@@ -34,27 +35,15 @@ export default function App() {
             />
             <Route
               path="/login"
-              element={
-                !user ? (
-                  <LogIn />
-                ) : isAccountVerified ? (
-                  <Application />
-                ) : (
-                  <Verify />
-                )
-              }
+              element={!user ? <LogIn /> : <Navigate to="/" />}
             />
             <Route
               path="/signup"
-              element={
-                !user ? (
-                  <SignUp />
-                ) : isAccountVerified ? (
-                  <Application />
-                ) : (
-                  <Verify />
-                )
-              }
+              element={!user ? <SignUp /> : <Navigate to="/" />}
+            />
+            <Route
+              path="/singlePlayer/practice"
+              element={!user ? <Navigate to="/login" /> : <Application />}
             />
           </Routes>
         </Router>
