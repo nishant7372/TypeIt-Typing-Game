@@ -10,6 +10,7 @@ const Timer = ({
   setTimeElapsed,
   progress,
   accuracy,
+  timeLimit,
   setTimeLimit,
   WPM,
   setWPM,
@@ -36,7 +37,8 @@ const Timer = ({
 
   let time = true;
 
-  if (timeElapsed > 40) time = false;
+  console.log(timeElapsed, timeLimit);
+  if (timeElapsed >= (timeLimit * 0.8)) time = false;
   let chooseTime = true;
   if (timeElapsed > 0) chooseTime = false;
   let choosen = -1;
