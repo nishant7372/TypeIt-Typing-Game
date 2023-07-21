@@ -54,7 +54,7 @@ export default function Application() {
 
   const minutes = timeElapsed / 60; // Time cal
 
-  const WPM = correctWords.length / minutes; // WPM cal
+  const WPM = (correctWords.length + incorrectWords.length) / minutes; // WPM cal
 
   const accuracy =
     (correctWords.length / (correctWords.length + incorrectWords.length)) * 100;
@@ -131,7 +131,12 @@ export default function Application() {
           <div className="flex justify-center">
             <div className="spinner">
               <SpinnerDotted
-                style={{ width: "10rem", height: "10rem", color: "blue" }}
+                style={{
+                  width: "10rem",
+                  height: "10rem",
+                  color: "magenta",
+                  marginTop: "15rem",
+                }}
               />
             </div>
           </div>
