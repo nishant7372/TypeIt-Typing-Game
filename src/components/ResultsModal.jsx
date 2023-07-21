@@ -10,7 +10,7 @@ const ResultsModal = () => {
     return a.currentDate > b.currentDate ? 1
     : a.currentDate < b.currentDate ? -1 
     : a.time < b.time ? 1 : -1;
-  }))
+  }).slice(0, 5))
 
   return (
     <>
@@ -41,7 +41,7 @@ const ResultsModal = () => {
                   width: "40vw",
                 }}>
                 <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t" >
-                  <h3 className="text-3xl font-semibold">Results</h3>
+                  <h3 className="text-3xl font-semibold">Results (Recent 5)</h3>
                   <button
                     className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
                     onClick={() => setShowModal(false)}
