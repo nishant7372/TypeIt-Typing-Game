@@ -1,13 +1,10 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 // spinner
-import {
-  SpinnerCircular,
-  SpinnerCircularFixed,
-  SpinnerDotted,
-} from "spinners-react";
+import { SpinnerDotted } from "spinners-react";
 
 // components
+import Accuracy from "../../components/Accuracy";
 import Word from "../../components/Word";
 import Timer from "../../components/Timer";
 import Header from "../../components/Header";
@@ -33,6 +30,7 @@ export default function Application() {
 
   // timer states
   const [startCounting, setStartCounting] = useState(false);
+
   const [timeElapsed, setTimeElapsed] = useState(0);
 
   // loading
@@ -55,7 +53,15 @@ export default function Application() {
   };
 
   const minutes = timeElapsed / 60; // Time cal
+
   const WPM = correctWords.length / minutes; // WPM cal
+
+  const accuracy =
+    (correctWords.length / (correctWords.length + incorrectWords.length)) * 100;
+
+  useEffect(() => {
+    localStorage.setItem("storage", JSON.stringify(result));
+  }, [result]);
 
   const checkInput = (value) => {
     if (activeWordIndex === words.length) {
@@ -129,12 +135,7 @@ export default function Application() {
           <div className="flex justify-center">
             <div className="spinner">
               <SpinnerDotted
-                style={{
-                  width: "8rem",
-                  height: "8rem",
-                  color: "magenta",
-                  marginTop: "15rem",
-                }}
+                style={{ width: "10rem", height: "10rem", color: "blue" }}
               />
             </div>
           </div>
@@ -150,20 +151,27 @@ export default function Application() {
                 setTimeElapsed={setTimeElapsed}
               />
 
-              <div
-                className="w-1/2 p-8 rounded-lg renderBlur"
-                style={{ lineHeight: 4 }}
+              <Accuracy accuracy={accuracy} />
+
+              <p
+                className="w-1/2 p-8 renderBlur leading-relaxed"
+                style={{ border: "2px solid red" }}
               >
-                {words.map((word, index) => (
-                  <Word
-                    key={index}
-                    text={word}
-                    active={index === activeWordIndex}
-                    correct={correctWords.includes(index)} // if it includes in correct word category
-                    incorrect={incorrectWords.includes(index)} // if it includes in correct word category
-                  />
-                ))}
-              </div>
+                {words.map(
+                  (
+                    word,
+                    index // final render of words
+                  ) => (
+                    <Word
+                      key={index}
+                      text={word}
+                      active={index === activeWordIndex}
+                      correct={correctWords.includes(index)}
+                      incorrect={incorrectWords.includes(index)}
+                    />
+                  )
+                )}
+              </p>
             </div>
 
             <div
@@ -177,7 +185,7 @@ export default function Application() {
 
             <div className="bottom">
               <SimpleButton
-                content="Restart"
+                content="Restart Game"
                 type={"restartButton"}
                 action={restartGame}
                 buttonStyle={{
