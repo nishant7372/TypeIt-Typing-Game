@@ -224,10 +224,10 @@ export default function Application() {
 
             <input
               autoFocus
-              className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-1/2 py-2 px-4 mt-12 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-green-500 lowercase"
+              className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-1/2 py-2 px-4 mt-12 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-green-500"
               type="text"
               value={userInput}
-              onChange={(e) => checkInput(e.target.value.toLowerCase())}
+              onChange={(e) => checkInput(e.target.value)}
               placeholder="start typing..."
               style={{ fontSize: "2.6rem" }}
             />
