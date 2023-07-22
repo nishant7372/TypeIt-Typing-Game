@@ -15,8 +15,7 @@ TypeIt is an engaging and challenging typing game built using React and powered 
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/your-username/typeit.git
-cd typeit
+gh repo clone nishant7372/TypeIt-main
 ```
 
 2. Install dependencies:
