@@ -114,6 +114,7 @@ export default function Application() {
           accuracy,
           currentDate,
           time,
+          difficulty,
         };
         // console.log(fixedResults);
         addDocument("PracticeResults", fixedResults);

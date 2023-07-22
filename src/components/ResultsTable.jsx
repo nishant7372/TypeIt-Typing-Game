@@ -1,6 +1,8 @@
 import React from "react";
 
-const ResultsTable = ({ WPM, timeElapsed, accuracy, id, date, time }) => {
+const ResultsTable = ({ WPM, timeElapsed, accuracy, id, date, time ,difficulty}) => {
+
+  var diff = ["Medium", "Easy", "Hard"];
 
   return (
     <table className="table-auto mt-4 border-4">
@@ -11,6 +13,7 @@ const ResultsTable = ({ WPM, timeElapsed, accuracy, id, date, time }) => {
           <th className="px-4 py-2">WPM</th>
           <th className="px-4 py-2">Accuracy</th>
           <th className="px-4 py-2">Time Taken</th>
+          <th className="px-4 py-2">Difficulty</th>
 
         </tr>
       </thead>
@@ -34,6 +37,10 @@ const ResultsTable = ({ WPM, timeElapsed, accuracy, id, date, time }) => {
           <td className="border-b border-purple-500 px-4 py-2 text-white">
             {timeElapsed} sec
           </td>
+          <td className="border-b border-purple-500 px-4 py-2 text-white">
+            {diff[difficulty]}
+          </td>
+
         </tr>
       </tbody>
     </table>

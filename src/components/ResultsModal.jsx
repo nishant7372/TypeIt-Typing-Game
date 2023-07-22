@@ -75,7 +75,7 @@ const ResultsModal = () => {
                   }}
                 >
                   {result.map(
-                    ({ WPM, timeElapsed, accuracy, id, currentDate, time }) => (
+                    ({ WPM, timeElapsed, accuracy, id, currentDate, time, difficulty}) => (
                       <ResultsTable
                         WPM={WPM}
                         timeElapsed={timeElapsed}
@@ -83,6 +83,7 @@ const ResultsModal = () => {
                         key={id}
                         date={currentDate}
                         time={time}
+                        difficulty = {difficulty}
                       />
                     )
                   )}
