@@ -1,8 +1,6 @@
 # TypeIt - Typing Game
 
-![TypeIt Logo]()
-
-TypeIt is an engaging and challenging typing game built using React and powered by Firebase. Sharpen your typing skills, improve your accuracy, and compete against your friends to achieve the highest scores. This README provides a comprehensive guide on how to set up, install, and run the game, as well as an overview of its features and how to contribute.
+TypeIt is an engaging and challenging typing game built using React and powered by Firebase. Sharpen your typing skills, improve your accuracy, and compete against your friends to achieve the highest scores. This README provides a comprehensive guide on how to set up, install, and run the game, as well as an overview of its features.
 
 ## Features
 
@@ -11,10 +9,6 @@ TypeIt is an engaging and challenging typing game built using React and powered 
 - **Firebase Integration**: Scores and user data are stored securely in Firebase, allowing you to keep track of your progress and compete with others.
 
 - **Real-time Leaderboard**: Compete against other players in real-time and see who can type the fastest. The leaderboard updates dynamically as new scores are submitted.
-
-- **Multiple Game Modes**: TypeIt offers different game modes, including timed challenges, word races, and custom text inputs.
-
-- **Responsive Design**: The game is built with a responsive design, making it accessible and enjoyable across various devices and screen sizes.
 
 ## Installation
 
@@ -38,12 +32,12 @@ npm install
    - Create a `.env` file in the project root and add your Firebase configuration:
 
 ```env
-REACT_APP_FIREBASE_API_KEY=your-api-key
-REACT_APP_FIREBASE_AUTH_DOMAIN=your-auth-domain
-REACT_APP_FIREBASE_PROJECT_ID=your-project-id
-REACT_APP_FIREBASE_STORAGE_BUCKET=your-storage-bucket
-REACT_APP_FIREBASE_MESSAGING_SENDER_ID=your-messaging-sender-id
-REACT_APP_FIREBASE_APP_ID=your-app-id
+VITE_FIREBASE_API_KEY=your-api-key
+VITE_FIREBASE_AUTH_DOMAIN=your-auth-domain
+VITE_FIREBASE_PROJECT_ID=your-project-id
+VITE_FIREBASE_STORAGE_BUCKET=your-storage-bucket
+VITE_FIREBASE_MESSAGING_SENDER_ID=your-messaging-sender-id
+VITE_FIREBASE_APP_ID=your-app-id
 ```
 
 4. Run the development server:
@@ -52,31 +46,10 @@ REACT_APP_FIREBASE_APP_ID=your-app-id
 npm run dev
 ```
 
-Visit `http://localhost:3000` in your browser to play the game.
+Visit `http://localhost:5173/` in your browser to play the game.
 
 ## How to Play
 
 1. Choose a game mode from the main menu.
 2. Start typing the displayed text as fast and accurately as you can.
 3. Once you finish, your score will be submitted to the leaderboard if you are signed in.
-4. Compete with other players and strive for the top spot on the leaderboard!
-
-## Contribution Guidelines
-
-We welcome contributions to improve TypeIt and make it even more exciting. To contribute:
-
-1. Fork the repository.
-2. Create a new branch for your feature: `git checkout -b feature-name`.
-3. Make your changes and commit them: `git commit -m "Add feature"`.
-4. Push the changes to your fork: `git push origin feature-name`.
-5. Create a pull request to the `main` branch of the original repository.
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
-## Contact
-
-If you have any questions or suggestions, feel free to reach out to us at typeit.game@example.com or open an issue in the repository.
-
-Enjoy typing and have fun with TypeIt! 🚀
