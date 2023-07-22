@@ -6,18 +6,14 @@ import {
   query,
   where,
   onSnapshot,
-  startAfter,
-  limit,
-  getDocs,
 } from "firebase/firestore";
-import { app, firestore } from "../../firebase/config";
+
+import { firestore } from "../../firebase/config";
 import { useApplicationContext } from "../context/useApplicationContext";
-import { useMessageContext } from "../context/useMessageContext";
 import { useAuthContext } from "../context/useAuthContext";
 
 export const useCollection = () => {
   const { dispatch: applicationDispatch } = useApplicationContext();
-  const { dispatch: messageDispatch } = useMessageContext();
   const { user } = useAuthContext();
 
   useEffect(() => {
@@ -39,7 +35,7 @@ export const useCollection = () => {
         });
       },
       (error) => {
-        messageDispatch({ type: "ERROR", payload: error.message });
+        console.log("ERROR", error);
       }
     );
 

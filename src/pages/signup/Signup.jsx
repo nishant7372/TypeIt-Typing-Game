@@ -5,13 +5,13 @@ import { useState } from "react";
 
 import { useSignup } from "../../hooks/auth/useSignup";
 import { useGoogleSignIn } from "../../hooks/auth/useGoogleSignIn";
-import { useMessageContext } from "../../hooks/context/useMessageContext";
 
 import Spinner from "../../components/loading-spinners/spinner/spinner";
 
 import eyePassword from "./../../assets/img/eye-password.png";
 import eyeText from "./../../assets/img/eye-text.png";
 import googleIcon from "./../../assets/img/google-logo.png";
+import Error from "../../components/messages/error";
 
 export default function SignUp() {
   const [passwordType, setPasswordType] = useState("password");
@@ -22,9 +22,10 @@ export default function SignUp() {
   });
 
   const { name, email, password } = authData;
-  const { dispatch: messageDispatch } = useMessageContext();
   const { signup, isPending } = useSignup();
   const { googleSignIn, isPending: googleSignInPending } = useGoogleSignIn();
+
+  const [error, setError] = useState(null);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -44,18 +45,20 @@ export default function SignUp() {
     e.preventDefault();
     const res = await signup(name, email, password);
     if (res.ok) {
-      messageDispatch({ type: "SUCCESS", payload: res.ok });
+      console.log("SUCCESS");
     } else if (res.error) {
-      messageDispatch({ type: "ERROR", payload: res.error });
+      setError(res.error);
+      console.log("ERROR", res.error);
     }
   };
 
   const handleGoogleAuth = async () => {
     const res = await googleSignIn();
     if (res.ok) {
-      messageDispatch({ type: "SUCCESS", payload: res.ok });
+      console.log("SUCCESS");
     } else if (res.error) {
-      messageDispatch({ type: "ERROR", payload: res.error });
+      setError(res.error);
+      console.log("ERROR", res.error);
     }
   };
 
@@ -132,7 +135,17 @@ export default function SignUp() {
             </div>
           </div>
         </label>
-
+        {error && (
+          <div style={{ display: "flex", alignItems: "stretch" }}>
+            <Error error={error} />
+            <button
+              onClick={() => setError(null)}
+              className={styles["errorCancelButton"]}
+            >
+              x
+            </button>
+          </div>
+        )}
         {isPending ? (
           <div className={styles["disabled"]}>
             <Spinner />

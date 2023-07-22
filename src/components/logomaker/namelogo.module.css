@@ -2,10 +2,12 @@
   font-weight: 500;
   color: white;
   border-radius: 50%;
-  font-size: 2rem;
-  padding: 0.4rem 0.85rem;
+  font-size: 1.6rem;
+  padding: 0.6rem 1.8rem;
   cursor: pointer;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .skyblue {

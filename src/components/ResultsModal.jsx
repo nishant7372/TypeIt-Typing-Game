@@ -1,19 +1,29 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ResultsTable from "./ResultsTable";
 import SimpleButton from "./button/simpleButton";
 import { useApplicationContext } from "../hooks/context/useApplicationContext";
 
+import { useCollection } from "../hooks/application/useCollection";
+
 const ResultsModal = () => {
+  useCollection();
   const [showModal, setShowModal] = useState(false);
   const { practiceResults } = useApplicationContext();
-  const [result, setResult] = useState(
-    practiceResults
-      .sort(
-        (a, b) =>
-          new Date(b.createdAt?.seconds) - new Date(a.createdAt?.seconds)
-      )
-      .slice(0, 5)
-  );
+  const [result, setResult] = useState([]);
+
+  useEffect(() => {
+    console.log("fetching results from firebase");
+    if (practiceResults) {
+      setResult(
+        practiceResults
+          .sort(
+            (a, b) =>
+              new Date(b.createdAt?.seconds) - new Date(a.createdAt?.seconds)
+          )
+          .slice(0, 5)
+      );
+    }
+  }, [practiceResults]);
 
   return (
     <>

@@ -4,19 +4,19 @@ import axios from "axios";
 import { SpinnerDotted } from "spinners-react";
 
 // components
-import Accuracy from "../../components/Accuracy";
+// import Accuracy from "../../components/Accuracy";
 import Word from "../../components/Word";
 import Timer from "../../components/Timer";
 import ResultsModal from "../../components/ResultsModal";
 import { v4 as uuid } from "uuid";
 import SimpleButton from "../../components/button/simpleButton";
 import { useFirestore } from "../../hooks/application/useFirestore";
-import { useCollection } from "../../hooks/application/useCollection";
+// import { useCollection } from "../../hooks/application/useCollection";
 import { useAuthContext } from "../../hooks/context/useAuthContext";
 
 export default function Application() {
   const { user } = useAuthContext();
-  useCollection();
+
   const { addDocument } = useFirestore();
 
   const [userInput, setUserInput] = useState(""); // state for user input
@@ -115,7 +115,7 @@ export default function Application() {
           currentDate,
           time,
         };
-        console.log(fixedResults);
+        // console.log(fixedResults);
         addDocument("PracticeResults", fixedResults);
       } else {
         setUserInput("");

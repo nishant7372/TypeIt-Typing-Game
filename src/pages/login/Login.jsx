@@ -5,9 +5,9 @@ import { useState } from "react";
 
 import { useLogin } from "../../hooks/auth/useLogin";
 import { useGoogleSignIn } from "../../hooks/auth/useGoogleSignIn";
-import { useMessageContext } from "../../hooks/context/useMessageContext";
 
 import Spinner from "../../components/loading-spinners/spinner/spinner";
+import Error from "../../components/messages/error";
 
 import eyePassword from "./../../assets/img/eye-password.png";
 import eyeText from "./../../assets/img/eye-text.png";
@@ -16,9 +16,9 @@ import googleIcon from "./../../assets/img/google-logo.png";
 export default function LogIn() {
   const [passwordType, setPasswordType] = useState("password");
   const [authData, setAuthData] = useState({ email: "", password: "" });
+  const [error, setError] = useState(null);
 
   const { email, password } = authData;
-  const { dispatch: messageDispatch } = useMessageContext();
   const { login, isPending } = useLogin();
   const { googleSignIn, isPending: googleSignInPending } = useGoogleSignIn();
 
@@ -40,18 +40,20 @@ export default function LogIn() {
     e.preventDefault();
     const res = await login(email, password);
     if (res.ok) {
-      messageDispatch({ type: "SUCCESS", payload: res.ok });
+      console.log("SUCCESS");
     } else if (res.error) {
-      messageDispatch({ type: "ERROR", payload: res.error });
+      console.log("ERROR", res.error);
+      setError(res.error);
     }
   };
 
   const handleGoogleAuth = async () => {
     const res = await googleSignIn();
     if (res.ok) {
-      messageDispatch({ type: "SUCCESS", payload: res.ok });
+      console.log("SUCCESS");
     } else if (res.error) {
-      messageDispatch({ type: "ERROR", payload: res.error });
+      console.log("ERROR", res.error);
+      setError(res.error);
     }
   };
 
@@ -116,6 +118,17 @@ export default function LogIn() {
             </div>
           </div>
         </label>
+        {error && (
+          <div style={{ display: "flex", alignItems: "stretch" }}>
+            <Error error={error} />
+            <button
+              onClick={() => setError(null)}
+              className={styles["errorCancelButton"]}
+            >
+              x
+            </button>
+          </div>
+        )}
         {isPending ? (
           <div className={styles["disabled"]}>
             <Spinner />

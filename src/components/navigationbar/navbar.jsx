@@ -4,21 +4,18 @@ import { NavLink, Link } from "react-router-dom";
 
 import { useLogout } from "../../hooks/auth/useLogout";
 import { useAuthContext } from "../../hooks/context/useAuthContext";
-import { useMessageContext } from "../../hooks/context/useMessageContext";
 import NameLogo from "../logomaker/namelogo";
 
 export default function NavBar() {
   const { logout, isPending } = useLogout();
   const { user } = useAuthContext();
 
-  const { dispatch: messageDispatch } = useMessageContext();
-
   const handleLogout = async () => {
     const res = await logout();
     if (res.ok) {
-      messageDispatch({ type: "SUCCESS", payload: res.ok });
+      console.log("SUCCESS");
     } else if (res.error) {
-      messageDispatch({ type: "ERROR", payload: res.error });
+      console.log("ERROR", res.error);
     }
   };
 
@@ -33,14 +30,7 @@ export default function NavBar() {
 
         {user ? (
           <>
-            <div className={styles["nav-middle"]}>
-              {/* <NavLink to="/articles">
-                <i className="fa-solid fa-bars"></i> &nbsp;My Articles
-              </NavLink>
-              <NavLink to="/shared">
-                <i className="fa-solid fa-bars"></i> &nbsp;Shared with me
-              </NavLink> */}
-            </div>
+            <div className={styles["nav-middle"]}></div>
             <div className={styles["nav-right-auth"]}>
               <Link to="/">
                 {user.photoURL ? (

@@ -24,7 +24,6 @@ export const useGoogleSignIn = () => {
       //   const token = credential.accessToken;
 
       // Dispatch login action
-      console.log(result.user);
       dispatch({ type: "LOGIN", payload: result.user });
 
       return { ok: "Login Successful" };
